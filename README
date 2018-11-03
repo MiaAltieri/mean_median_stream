@@ -1,0 +1,68 @@
+Build: javac DataSummary.java
+
+Execute: java DataSummary
+
+File Location: in order for this to run it will need a JSON file named
+	user-1.json, and this file must be located at '~/user-1.json'
+
+NOTE: Completion of the project is currently at deadlock, due to being
+	unable to add GSON to my classpath or use GSON in eclipse.
+
+HOW I CALCULATED MEDIAN: Calculating a median over a large data set
+	can be computationally expensive and expensive in the sense of 
+	storage. I looked at various libraries for calculating a running
+	median as well as other techniques, but nothing was quite what I
+	needed, so I fashioned my own solution: 
+
+	it is suggested that you follow along with the function:
+			 void computeMedian(Hashtable values, int size)
+	in DataSummary.java
+
+	As I looked at each value I store every number encountered in a 
+	Hashtable, the number as the key and the value is the number of time
+	that number was encounterd. 
+		i.e. stream 4,9,1,2,9,9,3,3,1,9,9,9 would have the hashtable:
+			 [ 1:2, 2:1 , 3:2 , 4:1 , 9:6]
+	then when calculating a mean I would see what the length of was the 
+	stream, in this program that is the variable `count`, and in the
+	example above it is 12. 
+	I would then divide that length into 2 and try to find the value at 
+	that point, the length/2 is also know as `remaining`
+
+	To find the value at that point I would grab the lowest key in the 
+	hashtable, and see how many values corresponded with that key, and 
+	subtract that number from `remaining`. NOW if after a subtraction
+		remaining < 0:
+			return that key, because that means that length/2 occured
+			when that key was present
+		OR if remaining = 0:
+			return (this key + next smallest key) / 2, because it means
+			that the middle occurs between this value and the next
+			smallest value. 
+
+
+	example: stream 4,9,1,2,9,9,3,3,1,9,9,9
+	 		 produces hashtable: [ 1:2, 2:1 , 3:2 , 4:1 , 9:6]
+	 		 count = 12
+	 		 remaining = 6
+
+	 		 smallest key = 1 corresponding value = 2
+	 		 update remaining = 4
+	 		 
+	 		 next smallest key = 2 corresponding value = 1
+	 		 update remaining = 3
+
+	 		 next smallest key = 3 corresponding value = 2
+	 		 update remaining = 1
+
+	 		 next smallest key = 4 corresponding value = 1
+	 		 update remaining = 0
+	 		 		NOTE this means the median is inbetween this
+	 		 		value and the next value so
+
+	 		 		return (4 + 9)/2
+
+
+
+
+
